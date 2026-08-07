@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+
+# Local secrets — never commit these
+.env
+.env.local
+.env*.local
+
+# Local development RSVP log (used only when no Google Sheet is connected yet)
+.rsvp-dev.log

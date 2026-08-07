@@ -1,0 +1,800 @@
+/* ==========================================================================
+   Ronit Pilates — 5 years + a toast to the new year
+   Boutique invitation. Mobile first; desktop is the same column with more air.
+
+   Every colour below is a token. All contrast pairs were verified against
+   WCAG AA (4.5:1 for text, 3:1 for placeholders and non-text).
+   ========================================================================== */
+
+:root {
+  /* --- surfaces ------------------------------------------------------- */
+  /*
+   * The blush/white relationship: the page is soft blush, everything raised
+   * is pure white. That's what makes the card and inputs read as objects
+   * resting on the invitation rather than shapes drawn on it.
+   */
+  --white: #ffffff;
+  --porcelain: #faf1ec; /* page ground — warm blush, sand rather than magenta */
+  --blush-veil: #f5e6de; /* deeper wash at the very top and base */
+  --blush-card: #ffffff; /* raised surfaces */
+  --blush-tint: #f6e5df; /* fills, chips */
+
+  /* --- lines ---------------------------------------------------------- */
+  --hairline: #ecd8d1;
+  --hairline-soft: #f4e6e1;
+
+  /* --- ink ------------------------------------------------------------ */
+  --ink: #2e2724; /* 13.2:1 */
+  --ink-soft: #6b5a54; /* 5.9:1  */
+  --label: #82626a; /* 4.8:1  */
+  --placeholder: #9c8680; /* 3.1:1  */
+
+  /* --- rose ----------------------------------------------------------- */
+  --rose: #9a5560; /* 4.9:1 — links, subheadline */
+  --numeral: #b0757f; /* 3.3:1 — large display type only */
+  --plum: #6e3d45; /* 7.8:1 — deep accent */
+  --rose-btn: #a85f6c; /* gradient top    — 4.7:1 on white */
+  --rose-btn-deep: #96505e; /* gradient bottom — 5.8:1 on white */
+  --rose-ring: rgba(154, 85, 96, 0.16);
+  --rose-glow: rgba(154, 85, 96, 0.1);
+
+  /* --- feedback ------------------------------------------------------- */
+  --danger: #a2453f;
+  --danger-tint: rgba(162, 69, 63, 0.06);
+  --danger-line: rgba(162, 69, 63, 0.2);
+
+  /* --- shadows -------------------------------------------------------- */
+  /*
+   * Tinted with rose rather than grey, so nothing looks smudged — and kept
+   * shallow, so the card reads as paper lying on the page rather than a panel
+   * floating above it.
+   */
+  --shadow-card: 0 1px 1px rgba(110, 61, 69, 0.03), 0 6px 16px -10px rgba(110, 61, 69, 0.12),
+    0 18px 34px -26px rgba(110, 61, 69, 0.14);
+  --shadow-input: 0 1px 2px rgba(110, 61, 69, 0.03);
+  --shadow-btn: 0 1px 2px rgba(110, 61, 69, 0.14), 0 10px 24px -12px rgba(110, 61, 69, 0.5);
+  --shadow-btn-hover: 0 1px 2px rgba(110, 61, 69, 0.16), 0 14px 30px -12px rgba(110, 61, 69, 0.55);
+
+  /*
+   * --- shape ----------------------------------------------------------
+   * Restrained radii on purpose. Pills and 24px corners read as app UI;
+   * this page is meant to read as a piece of paper you were handed.
+   */
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 12px;
+
+  /* --- motion --------------------------------------------------------- */
+  --ease: cubic-bezier(0.22, 0.68, 0.24, 1);
+  --ease-soft: cubic-bezier(0.32, 0.72, 0.24, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100svh;
+  background-color: var(--porcelain);
+  /*
+   * Two whisper-thin blush washes at the very top and base. White stays the
+   * dominant colour — these only stop the page reading as flat, they should
+   * never be noticed as "pink".
+   */
+  background-image:
+    radial-gradient(115% 30% at 50% -4%, var(--blush-veil) 0%, rgba(248, 228, 222, 0) 72%),
+    radial-gradient(90% 22% at 50% 103%, var(--blush-veil) 0%, rgba(248, 228, 222, 0) 78%);
+  background-repeat: no-repeat;
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --------------------------------------------------------------- layout -- */
+
+.page {
+  width: 100%;
+  max-width: 30rem;
+  margin-inline: auto;
+  /* Extra bottom room clears the iPhone home indicator. */
+  padding: clamp(3rem, 11vw, 5rem) 1.5rem calc(clamp(3rem, 9vw, 4.5rem) + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/*
+ * Without this, `align-items: center` sizes each block to its max-content
+ * width, so a long headline pushes past the viewport instead of wrapping.
+ */
+.page > * {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* ------------------------------------------------------------- masthead -- */
+
+.mast {
+  display: block;
+}
+
+.mast img {
+  display: block;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* ------------------------------------------------------------- ornament -- */
+
+/*
+ * The studio's own logo separates its three words with thin vertical rules —
+ * לנשום | להתחטב | ליהנות. That rule is borrowed here as the page's connective
+ * tissue: it descends from the logo into the headline, and it reappears
+ * between the venue and its address. A drawn motif would have been generic
+ * invitation furniture; this belongs to the brand.
+ */
+.ornament {
+  transform-origin: top;
+  width: 1px;
+  height: clamp(2.5rem, 8vw, 3.25rem);
+  /* Asymmetric on purpose: it should hang from the logo, not float between. */
+  margin: clamp(1.1rem, 4vw, 1.5rem) auto clamp(2.2rem, 7vw, 2.9rem);
+  background: linear-gradient(
+    to bottom,
+    rgba(236, 216, 209, 0),
+    var(--hairline) 28%,
+    var(--hairline) 72%,
+    rgba(236, 216, 209, 0)
+  );
+}
+
+/* -------------------------------------------------------------- hero ---- */
+
+.eyebrow {
+  margin: 0 0 clamp(0.85rem, 3vw, 1.1rem);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  /* The tracking above adds a trailing gap that breaks optical centring. */
+  text-indent: 0.34em;
+  color: var(--label);
+  text-transform: none;
+}
+
+.headline {
+  margin: 0;
+  font-family: var(--font-serif), 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: clamp(2.9rem, 14vw, 4.15rem);
+  line-height: 1.06;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/*
+ * The anniversary number is the emotional centre of the page, so it is set as
+ * display type rather than a tinted character: larger than the words around
+ * it, and a step lighter so it reads as an object the sentence is built around.
+ */
+.headline .numeral {
+  color: var(--numeral);
+  font-size: 1.16em;
+  /* Keeps the larger glyph from opening up the line box. */
+  line-height: 0;
+  /*
+   * No side padding: the words already carry their own spaces, and adding
+   * more here reads as three separate fragments rather than one phrase.
+   */
+  margin-inline: -0.02em;
+}
+
+.subheadline {
+  margin: clamp(0.6rem, 2.4vw, 0.9rem) 0 0;
+  font-family: var(--font-serif), 'Times New Roman', serif;
+  font-size: clamp(1.3rem, 5.6vw, 1.7rem);
+  line-height: 1.35;
+  letter-spacing: 0.005em;
+  color: var(--rose);
+  text-wrap: balance;
+}
+
+.intro {
+  margin: clamp(1.35rem, 4.5vw, 1.8rem) auto 0;
+  max-width: 23rem;
+  font-size: 1.01rem;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* -------------------------------------------------------------- details -- */
+
+.details {
+  margin: clamp(2.25rem, 7vw, 3rem) 0 0;
+  padding: clamp(1.75rem, 6vw, 2.25rem) clamp(1.25rem, 5vw, 1.75rem);
+  background: var(--blush-card);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.1rem, 4vw, 1.4rem);
+}
+
+.details p {
+  margin: 0;
+}
+
+.details .when {
+  font-family: var(--font-serif), 'Times New Roman', serif;
+  font-size: clamp(1.4rem, 6vw, 1.65rem);
+  line-height: 1.4;
+  letter-spacing: 0.003em;
+}
+
+.details .when .time {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8em;
+  color: var(--ink-soft);
+}
+
+/* A hairline that stops short of the card edges. */
+.details .rule {
+  width: 3.5rem;
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--hairline);
+  opacity: 0.9;
+}
+
+.details .where {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.details .venue-name {
+  font-family: var(--font-serif), 'Times New Roman', serif;
+  font-size: clamp(1.25rem, 5.2vw, 1.45rem);
+  line-height: 1.4;
+}
+
+/* The same vertical rule as the logo tagline, at text scale. */
+.details .venue-name .sep {
+  display: inline-block;
+  width: 1px;
+  height: 0.95em;
+  margin-inline: 0.7em;
+  vertical-align: -0.08em;
+  background: var(--hairline);
+}
+
+.maps-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  /* 44px tall tap target without looking like a button. */
+  min-height: 44px;
+  padding-inline: 0.9rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.11em;
+  text-indent: 0.11em;
+  color: var(--rose);
+  text-decoration: none;
+  border-radius: var(--r-sm);
+  background: transparent;
+  transition: background-color 0.28s var(--ease), color 0.28s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.maps-link:hover,
+.maps-link:focus-visible {
+  background: var(--blush-tint);
+  color: var(--plum);
+}
+
+.maps-link:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+.maps-link svg {
+  flex: none;
+  transition: transform 0.28s var(--ease);
+}
+
+.maps-link:hover svg {
+  transform: translateX(-3px);
+}
+
+/* ----------------------------------------------------------------- rsvp -- */
+
+.rsvp {
+  margin-top: clamp(2.25rem, 7vw, 3rem);
+  /*
+   * Reserves room so swapping the form for the confirmation doesn't make the
+   * page jump. Sized to the taller of the two.
+   */
+  min-height: 17rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  text-align: right;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.55rem;
+  padding-inline-start: 0.15rem;
+  font-size: 0.73rem;
+  font-weight: 500;
+  letter-spacing: 0.17em;
+  text-indent: 0.17em;
+  color: var(--label);
+  transition: color 0.24s var(--ease);
+}
+
+/* The label answers when its field is focused. */
+.field:focus-within label {
+  color: var(--rose);
+}
+
+.field input {
+  width: 100%;
+  /* 16px minimum — anything smaller makes iOS Safari zoom on focus. */
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  /* 54px tall: comfortably above the 44px minimum touch target. */
+  padding: 1rem 1.15rem;
+  box-shadow: var(--shadow-input);
+  transition: border-color 0.24s var(--ease), box-shadow 0.24s var(--ease);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.field input::placeholder {
+  color: var(--placeholder);
+  font-weight: 300;
+}
+
+/*
+ * The phone field types digits left-to-right inside an RTL page, but stays
+ * aligned to the right edge where a Hebrew reader's eye begins.
+ */
+.field input[type='tel'] {
+  direction: ltr;
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+.field input:hover:not(:focus) {
+  border-color: #e6c9c2;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--rose);
+  box-shadow: 0 0 0 4px var(--rose-ring);
+}
+
+.field input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.field input[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 4px rgba(162, 69, 63, 0.13);
+}
+
+.field .error {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  padding-inline-start: 0.15rem;
+  font-size: 0.81rem;
+  color: var(--danger);
+  animation: nudge 0.34s var(--ease) both;
+}
+
+.field .error svg {
+  flex: none;
+}
+
+/* ------------------------------------------------------------- buttons -- */
+
+.submit {
+  position: relative;
+  margin-top: 0.5rem;
+  width: 100%;
+  min-height: 3.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-family: inherit;
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  color: var(--white);
+  background: linear-gradient(to bottom, var(--rose-btn), var(--rose-btn-deep));
+  border: 0;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: var(--shadow-btn);
+  transition: box-shadow 0.26s var(--ease), transform 0.16s var(--ease), opacity 0.26s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* A soft sheen across the top edge, the way pressed foil catches light. */
+.submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 55%);
+  pointer-events: none;
+}
+
+.submit:hover:not(:disabled) {
+  box-shadow: var(--shadow-btn-hover);
+}
+
+.submit:active:not(:disabled) {
+  /* Scale only — never anything that reflows the page. */
+  transform: scale(0.985);
+}
+
+.submit:focus-visible {
+  outline: 2px solid var(--plum);
+  outline-offset: 3px;
+}
+
+.submit:disabled {
+  cursor: default;
+  opacity: 0.68;
+}
+
+.spinner {
+  width: 1.05em;
+  height: 1.05em;
+  border: 2px solid rgba(255, 255, 255, 0.34);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.form-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0.15rem 0 0;
+  padding: 0.9rem 1.05rem;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  text-align: right;
+  color: var(--danger);
+  background: var(--danger-tint);
+  border: 1px solid var(--danger-line);
+  border-radius: var(--r-sm);
+  animation: nudge 0.34s var(--ease) both;
+}
+
+.form-error svg {
+  flex: none;
+  margin-top: 0.2rem;
+}
+
+/* --------------------------------------------------------- confirmation -- */
+
+.confirmation {
+  text-align: center;
+  animation: settle 0.8s var(--ease-soft) both;
+}
+
+.confirmation .seal {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0 auto clamp(1.4rem, 5vw, 1.75rem);
+  border-radius: 50%;
+  background: var(--blush-card);
+  border: 1px solid var(--hairline);
+  color: var(--rose);
+  box-shadow: 0 2px 10px -4px rgba(110, 61, 69, 0.18);
+  animation: bloom 0.7s var(--ease-soft) 0.1s both;
+}
+
+/* The tick draws itself in, so the confirmation feels earned. */
+.confirmation .seal path {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: draw 0.55s var(--ease) 0.42s both;
+}
+
+.confirmation h2 {
+  margin: 0;
+  font-family: var(--font-serif), 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: clamp(1.75rem, 7.5vw, 2.15rem);
+  line-height: 1.3;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.confirmation h2 .heart {
+  color: var(--rose);
+  vertical-align: -0.04em;
+  margin-inline-start: 0.15em;
+}
+
+.confirmation p {
+  margin: 0.65rem 0 0;
+  font-size: 1.02rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+}
+
+.confirmation .calendar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  margin-top: clamp(1.5rem, 5vw, 1.9rem);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.09em;
+  text-indent: 0.09em;
+  color: var(--rose);
+  text-decoration: none;
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-input);
+  transition: border-color 0.26s var(--ease), background-color 0.26s var(--ease), color 0.26s var(--ease),
+    transform 0.16s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.confirmation .calendar-link:hover,
+.confirmation .calendar-link:focus-visible {
+  border-color: var(--rose);
+  background: var(--blush-card);
+  color: var(--plum);
+}
+
+.confirmation .calendar-link:active {
+  transform: scale(0.985);
+}
+
+.confirmation .calendar-link:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 3px;
+}
+
+.confirmation .calendar-link svg {
+  flex: none;
+}
+
+/* ----------------------------------------------------------------- venue -- */
+
+.venue-mark {
+  margin-top: clamp(2.75rem, 8.5vw, 3.75rem);
+  padding-top: clamp(1.75rem, 5.5vw, 2.25rem);
+  border-top: 1px solid var(--hairline-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.venue-mark .caption {
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: var(--label);
+}
+
+.venue-mark img {
+  display: block;
+  height: auto;
+  opacity: 0.9;
+  transition: opacity 0.3s var(--ease);
+}
+
+.venue-mark a:hover img,
+.venue-mark a:focus-visible img {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------ a11y -- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------- motion -- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise, 14px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The connecting rule draws downward from the logo. */
+@keyframes unfurl {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bloom {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes nudge {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+ * The invitation unfolds top to bottom. The travel distance is graded rather
+ * than uniform — the logo and hero carry further, the practical blocks below
+ * barely move — so the sequence reads as one considered gesture instead of a
+ * list of things sliding in.
+ */
+.page > * {
+  animation: rise 0.9s var(--ease-soft) both;
+}
+
+/* logo */
+.page > *:nth-child(1) {
+  --rise: 22px;
+  animation-delay: 0.06s;
+}
+/* the rule descends rather than rises */
+.page > *:nth-child(2) {
+  animation: unfurl 0.85s var(--ease-soft) 0.24s both;
+}
+/* hero */
+.page > *:nth-child(3) {
+  --rise: 18px;
+  animation-delay: 0.38s;
+}
+/* details */
+.page > *:nth-child(4) {
+  --rise: 12px;
+  animation-delay: 0.54s;
+}
+/* rsvp */
+.page > *:nth-child(5) {
+  --rise: 10px;
+  animation-delay: 0.68s;
+}
+/* venue mark */
+.page > *:nth-child(6) {
+  --rise: 8px;
+  animation-delay: 0.82s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* The spinner still needs to convey "working". */
+  .spinner {
+    animation-duration: 0.7s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+/* --------------------------------------------------------------- desktop -- */
+
+@media (min-width: 48rem) {
+  .page {
+    max-width: 32rem;
+    padding-block: clamp(4.5rem, 9vh, 6.5rem) 4.5rem;
+  }
+
+  .intro {
+    max-width: 25rem;
+  }
+}
